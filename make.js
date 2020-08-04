@@ -46,10 +46,9 @@ function preview(){
 }
 
 function save(){
-    const data = compile(false);
-    localStorage.setItem("head",data[0].replace(`<script src="/menu.js"></script>`,""));
-    localStorage.setItem("body",data[1]);
-
+    const dump = compile();
+    var blob = new Blob([dump], {type: "text/html"});
+    saveAs(blob, `${document.getElementById("ctitle").innerText}.html`);
 }
 
 function addProb() {
@@ -128,7 +127,7 @@ MathJax = {
         <div class="col-sm-8" id="bod2" >
 
             <div>
-                <h2>${document.getElementById("ctitle").innerText}</h2>
+                <h2>${document.getElementById("ctitle").innerHTML}</h2>
                 ${document.getElementById("mainContent").innerHTML}
 
 <div style="height:7vh"></div>
