@@ -8,6 +8,7 @@ $('body').on('focus', '[contenteditable]', function() {
         $this.trigger('change');
     }
 });
+var n;
 function showTag(){
     const loc = window.getSelection().focusNode.parentNode;
     const tag = loc.tagName;
@@ -37,6 +38,15 @@ function showTag(){
     } else {
         document.querySelector("#headingInd").innerText="Normal Text"
     }
+
+
+    var cont = $("#mainContent").html();
+    cont = cont.replace(/<[^>]*>/g," ");
+    cont = cont.replace(/\s+/g, ' ');
+    cont = cont.trim();
+    n = cont.split(" ").length;
+
+
 }
 
 document.querySelector("#mainContent").addEventListener("click",(e)=>{
@@ -175,4 +185,16 @@ hcolorWheel.on('input:end', function(color){
         document.execCommand("hiliteColor", false, hc);
         document.getElementById("hcolorInd").style.color = hc;
     }
-})
+});
+
+function getRndInteger(min, max) {
+    return Math.floor(Math.random() * (max - min) ) + min;
+}
+
+const protips = ["Copy and paste content directly from another course or website!",
+    "Use the link tool to fully customize your navigation bar, right from the editor!",
+    "Use the code editor for extra customization - the possibilities are endless!",
+    "Hit the <i class='fas fa-eye'></i> button for a live preview of your course!"
+];
+
+document.querySelector(".toast-body").innerHTML = protips[getRndInteger(0,protips.length)]
