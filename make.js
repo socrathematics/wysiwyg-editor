@@ -65,14 +65,50 @@ document.execCommand("insertHTML",false,`<li class="card card-body no-def my-3 p
         </details>
         </li><p>`); pnum+=1;
 }
+//Download data as json
+function getComp(){
+    RemoveMJ()
+    const c =  {
+        name: document.getElementById("docnameflat").value,
+        titleText: document.getElementById("ctitle").innerText,
+        navHTML: document.querySelector("#main .col-sm-3").innerHTML,
+        titleHTML: document.getElementById("ctitle").innerHTML,
+        bnavHTML: document.getElementById("bottomNav").innerHTML,
+        mainHTML: document.getElementById("mainContent").innerHTML,
+        prevText: document.getElementById("mainContent").textContent.substring(0,50)+"..."
+    };
+    ToggleMJ();
+    return c
+}
+//this works!
+function importData(c) {
+    document.querySelector("#main .col-sm-3").innerHTML = c.navHTML;
+    document.getElementById("ctitle").innerHTML = c.titleHTML;
+    document.getElementById("bottomNav").innerHTML = c.bnavHTML;
+    document.getElementById("mainContent").innerHTML = c.mainHTML;
+
+}
+//get document id from user. do this while modal is still open to give errors. show document id above toolbar.
+function upload(docu){
+    const user = auth.currentUser;
+    const c = getComp();
+    db.collection("users").doc(user.uid).collection("courses").doc(docu).set(c).then((e)=>{console.log("uploaded!")})
+
+}
 
 
-
-function compile(fire=true){
+//compile data - if none is given, get from document. this works.
+function compile(comp= {},fire=true){
     RemoveMJ();
+    const titleText = comp.titleText||document.getElementById("ctitle").innerText;
+    const navHTML = comp.navHTML||document.querySelector("#main .col-sm-3").innerHTML;
+    const titleHTML = comp.titleHTML ||document.getElementById("ctitle").innerHTML;
+    const bnavHTML = comp.bnavHTML ||document.getElementById("bottomNav").innerHTML;
+    const mainHTML = comp.mainHTML || document.getElementById("mainContent").innerHTML;
+    ToggleMJ();
     return [`
     <!-- Global site tag (gtag.js) - Google Analytics -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-163408633-2"></script>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-163408633-2"/>
     <script>
         window.dataLayer = window.dataLayer || [];
         function gtag(){dataLayer.push(arguments);}
@@ -87,16 +123,16 @@ function compile(fire=true){
         'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
     })(window,document,'script','dataLayer','GTM-PF58PDC');</script>
     <!-- End Google Tag Manager -->
-    <title>${document.getElementById("ctitle").innerText}</title>
+    <title>${titleText}</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="apple-mobile-web-app-title" content="SOCRATHEMATICS">
     <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="apple-mobile-web-app-status-bar-style" content="#28a745">
       <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
-  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"/>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"/>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"/>
    <link rel="icon" href="/favicon.png">
     <link rel="stylesheet" href="/fonts.css">
     <link rel="stylesheet" href="/header.css">
@@ -121,17 +157,17 @@ MathJax = {
 
 <div class="container" style="margin-top:30px">
     <div class="row" id="main">
-    <div  class="col-sm-3">${document.querySelector("#main .col-sm-3").innerHTML.replaceAll(`contenteditable=""`,"")}</div>
+    <div  class="col-sm-3">${navHTML.replaceAll(`contenteditable=""`,"")}</div>
         
 
         <div class="col-sm-8" id="bod2" >
 
             <div>
-                <h2>${document.getElementById("ctitle").innerHTML}</h2>
-                ${document.getElementById("mainContent").innerHTML}
+                <h2>${titleHTML}</h2>
+                ${mainHTML}
 
 <div style="height:7vh"></div>
-<nav>${document.getElementById("bottomNav").innerHTML.replaceAll(`contenteditable=""`,"")}</nav>
+<nav>${bnavHTML.replaceAll(`contenteditable=""`,"")}</nav>
                 
             </div>
         </div>

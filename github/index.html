@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-163408633-2"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+
+        gtag('config', 'UA-163408633-2');
+    </script>
+    <!-- Google Tag Manager -->
+    <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+            new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+        j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+        'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+    })(window,document,'script','dataLayer','GTM-PF58PDC');</script>
+    <!-- End Google Tag Manager -->
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="apple-mobile-web-app-title" content="SOCRATHEMATICS">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/clipboard@2.0.6/dist/clipboard.min.js"></script>
+    <script src="https://kit.fontawesome.com/30a0cbcf71.js" crossorigin="anonymous"></script>
+    <link rel="icon" href="/favicon.png">
+    <link rel="stylesheet" href="/fonts.css">
+    <link rel="stylesheet" href="/header.css">
+    <link rel="stylesheet" href="/style.css">
+    <title>Github</title>
+    <script src="auth.js"></script>
+</head>
+<body>
+<script src="../menu.js"></script>
+<!-- The core Firebase JS SDK is always required and must be listed first -->
+<script src="https://www.gstatic.com/firebasejs/7.17.1/firebase-app.js"></script>
+
+<!-- TODO: Add SDKs for Firebase products that you want to use
+     https://firebase.google.com/docs/web/setup#available-libraries -->
+
+<script  src="https://www.gstatic.com/firebasejs/7.17.1/firebase-analytics.js"></script>
+<script  src="https://www.gstatic.com/firebasejs/7.17.1/firebase-auth.js"></script>
+<script  src="https://www.gstatic.com/firebasejs/7.17.1/firebase-firestore.js"></script>
+
+
+<script>
+    // Your web app's Firebase configuration
+    var firebaseConfig = {
+        apiKey: "AIzaSyBIo2sk5KS9CId37JmgIdsLtAQ1bsbwB_E",
+        authDomain: "socrathematics-cms.firebaseapp.com",
+        databaseURL: "https://socrathematics-cms.firebaseio.com",
+        projectId: "socrathematics-cms",
+        storageBucket: "socrathematics-cms.appspot.com",
+        messagingSenderId: "519917689116",
+        appId: "1:519917689116:web:d554fe30bf72534c1402d9",
+        measurementId: "G-45XWG0GJN0"
+    };
+
+    // Initialize Firebase
+    firebase.initializeApp(firebaseConfig);
+    firebase.analytics();
+    const auth=firebase.auth();
+    const db = firebase.firestore();
+</script>
+<script src="/wysiwyg-editor/auth/auth.js"></script>
+</body>
+</html>

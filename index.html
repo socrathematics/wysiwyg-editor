@@ -65,14 +65,14 @@
     <script src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_CHTML"></script>
     <script>
         var isTypeset = true;
-        function ToggleMJ(button) {
-            button.disabled = true;
-            button.value = (isTypeset ? "Typeset Math" : "Remove Typeset Math");
+        function ToggleMJ(button=null) {
+            //button.disabled = true;
+            //button.value = (isTypeset ? "Typeset Math" : "Remove Typeset Math");
             MathJax.Hub.Queue(
                 (isTypeset ? RemoveMJ : ["Typeset",MathJax.Hub]),
                 function () {
                     isTypeset = !isTypeset;
-                    button.disabled = false;
+                    //button.disabled = false;
                 }
             );
         }
@@ -90,6 +90,7 @@
                 script.parentNode.insertBefore(document.createTextNode(tex),script);
                 script.parentNode.removeChild(script);
             }
+            isTypeset = false;
         }
 
     </script>
@@ -100,19 +101,48 @@
 }); $(function () {
         $(`[data-toggle-second='tooltip']`).tooltip()
 });
-$('.toast').toast({autohide:false});$('.toast').toast('show')">
+//$('.toast').toast({autohide:false});$('.toast').toast('show')
+">
 <!-- Google Tag Manager (noscript) -->
 <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-PF58PDC"
                   height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 <!-- End Google Tag Manager (noscript) -->
-<script src="/menu.js"></script>
+<script src="/wysiwyg-editor/menu.js"></script>
 
-<script src="make.js">
-</script>
+<script src="make.js"></script>
 
-<div class="container" style="margin-top:30px">
+
+
+<!-- Modal -->
+<div class="modal fade" id="dnameModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Name your Document</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="signin-form">
+                    <div class="form-group">
+                        <label class="" for="docname">How should we save your document?</label>
+                        <input class="form-control" type="text" id="docname" required />
+
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                <button type="submit" id="dnamesub" class="btn btn-success">Save</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="container" id="all" style="margin-top:30px">
     <div class="row d-flex justify-content-center align-items-center">
-        <div class="toast" role="alert" aria-live="assertive" aria-atomic="true">
+        <!--<div class="toast" role="alert" aria-live="assertive" aria-atomic="true">
             <div class="toast-header">
                 <strong class="mr-auto">Pro Tip</strong>
                 <button type="button" class="ml-2 mb-1 close" data-dismiss="toast" aria-label="Close">
@@ -122,16 +152,22 @@ $('.toast').toast({autohide:false});$('.toast').toast('show')">
             <div class="toast-body">
                 Copy and paste content directly from another course or website into the editor!
             </div>
-        </div>
+        </div>-->
     </div>
     <div class="row ml-5 mb-2">
 
-        <div class="btn-toolbar" role="toolbar" aria-label="Toolbar with button groups">
-            <div class="btn-group mr-2" role="group" aria-label="First group">
+        <div class="btn-toolbar  " role="toolbar" aria-label="Toolbar with button groups">
+            <div class="input-group mr-3">
+
+                <input class="form-control form-control-lg no-hl" type="text" id="docnameflat"  />
+
+            </div>
+            <div class="btn-group float-right " role="group" aria-label="First group">
                 <button class="btn btn-info"
                         onclick="ToggleMJ(this)" id="toggle"
                 >$x^2$</button>
-                <button class="btn btn-light" data-toggle="tooltip" data-placement="top" title="Edit HTML" onclick="let editor=document.getElementById('content');editor.classList.toggle('showCodeEditor');
+                <button class="btn btn-light" data-toggle="tooltip" data-placement="top" title="Edit HTML" onclick="
+                let editor=document.getElementById('content');editor.classList.toggle('showCodeEditor');
         if( editor.classList.contains('showCodeEditor') ) {
             RemoveMJ();
         myCodeMirror.setValue(editor.innerHTML);
@@ -153,8 +189,12 @@ let sideeditor=document.getElementById('side');sideeditor.classList.toggle('show
                 <button class="btn btn-light" data-toggle="tooltip" data-placement="top" title="Add Problem" onclick="addProb()">
                     ?
                 </button>
-                <button class="btn btn-light" data-toggle="tooltip" data-placement="top" title="Save .html" onclick="addProb()">
+                <button class="btn btn-light" data-toggle="tooltip" data-placement="top" title="Save .html" onclick="save()">
                     <i class="fas fa-file-download"></i>
+                </button>
+                <button class="btn auth btn-light" data-toggle-second="tooltip" data-placement="top" title="Save to my files" onclick="
+upload(initialName)">
+                    <i class="fas fa-cloud-upload-alt"></i>
                 </button>
             </div>
         </div>
@@ -234,33 +274,33 @@ let sideeditor=document.getElementById('side');sideeditor.classList.toggle('show
                         onclick="document.execCommand('unlink')"
                 ><i class="fas fa-unlink"></i></button></div>
 
-            <div class="btn-group mr-2" role="group" aria-label="Second group">
+            <div class="btn-group text-align-group mr-2" role="group" aria-label="Second group">
                 <button class="btn btn-light"
-                        onclick="document.execCommand('justifyLeft')" data-toggle="tooltip" data-placement="bottom" title="Left align"
+                        onclick="document.execCommand('justifyLeft');showTag()" data-toggle="tooltip" data-placement="bottom" title="Left align"
                 ><i class="fas fa-align-left"></i></button>
                 <button class="btn btn-light"
-                        onclick="document.execCommand('justifyCenter')" data-toggle="tooltip" data-placement="bottom" title="Center align"
+                        onclick="document.execCommand('justifyCenter');showTag()" data-toggle="tooltip" data-placement="bottom" title="Center align"
                 ><i class="fas fa-align-center"></i></button>
                 <button class="btn btn-light"
-                        onclick="document.execCommand('justifyRight')" data-toggle="tooltip" data-placement="bottom" title="Right align"
-                ><i class="fas fa-align-right"></i></button>
+                        onclick="document.execCommand('justifyRight');showTag()" data-toggle="tooltip" data-placement="bottom" title="Right align"
+                ><i class="fas fa-align-right "></i></button>
                 <button class="btn btn-light"
-                        onclick="document.execCommand('justifyFull')" data-toggle="tooltip" data-placement="bottom" title="Justify"
+                        onclick="document.execCommand('justifyFull');showTag()" data-toggle="tooltip" data-placement="bottom" title="Justify"
                 ><i class="fas fa-align-justify"></i></button>
 
             </div>
             <div class="btn-group mr-2" role="group" aria-label="Second group">
-        <button class="btn btn-light"
-                onclick="document.execCommand('insertUnorderedList')" data-toggle="tooltip" data-placement="bottom" title="Bulleted list"
+        <button class="btn btn-light "
+                onclick="document.execCommand('insertUnorderedList');showTag()" data-toggle="tooltip" data-placement="bottom" title="Bulleted list"
         ><i class="fas fa-list-ul"></i></button>
         <button class="btn btn-light"
-                onclick="document.execCommand('insertOrderedList')" data-toggle="tooltip" data-placement="bottom" title="Numbered list"
+                onclick="document.execCommand('insertOrderedList');showTag()" data-toggle="tooltip" data-placement="bottom" title="Numbered list"
         ><i class="fas fa-list-ol"></i></button>
                 <button class="btn btn-light"
-                        onclick="document.execCommand('indent')" data-toggle="tooltip" data-placement="bottom" title="Increase indent"
+                        onclick="document.execCommand('indent');showTag()" data-toggle="tooltip" data-placement="bottom" title="Increase indent"
                 ><i class="fas fa-indent"></i></button>
                 <button class="btn btn-light"
-                        onclick="document.execCommand('outdent')" data-toggle="tooltip" data-placement="bottom" title="Decrease indent"
+                        onclick="document.execCommand('outdent');showTag()" data-toggle="tooltip" data-placement="bottom" title="Decrease indent"
                 ><i class="fas fa-outdent"></i></button>
         </div>
             <div class="btn-group mr-2" role="group">
@@ -347,7 +387,7 @@ let sideeditor=document.getElementById('side');sideeditor.classList.toggle('show
         </ul>
     </nav>
 </div>
-                <div id="codeEditorC" style="padding-left:2rem !important;" class="ml-5 mt-3 mousetrap"><textarea id="codeEditor" class="form-control"></textarea></div>
+                <div id="codeEditorC" style="padding-left:2rem !important;" class=" mb-5 ml-5 mt-3 mousetrap"><textarea id="codeEditor" class="form-control"></textarea></div>
 
                 <style>
                     #content.showCodeEditor{
@@ -389,34 +429,36 @@ let sideeditor=document.getElementById('side');sideeditor.classList.toggle('show
     </div>
 </div>
 <!-- The core Firebase JS SDK is always required and must be listed first -->
-<script src="https://www.gstatic.com/firebasejs/7.15.0/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/7.17.1/firebase-app.js"></script>
 
 <!-- TODO: Add SDKs for Firebase products that you want to use
      https://firebase.google.com/docs/web/setup#available-libraries -->
 
-<script  src="https://www.gstatic.com/firebasejs/7.15.1/firebase-analytics.js"></script>
-<script  src="https://www.gstatic.com/firebasejs/7.15.0/firebase-auth.js"></script>
-<script  src="https://www.gstatic.com/firebasejs/7.15.0/firebase-firestore.js"></script>
+<script  src="https://www.gstatic.com/firebasejs/7.17.1/firebase-analytics.js"></script>
+<script  src="https://www.gstatic.com/firebasejs/7.17.1/firebase-auth.js"></script>
+<script  src="https://www.gstatic.com/firebasejs/7.17.1/firebase-firestore.js"></script>
+
 
 <script>
     // Your web app's Firebase configuration
     var firebaseConfig = {
-        apiKey: "AIzaSyA6bA3PlHiFGHB1CIWobuBUsEa9IQ7AL3I",
-        authDomain: "socrathematics.firebaseapp.com",
-        databaseURL: "https://socrathematics.firebaseio.com",
-        projectId: "socrathematics",
-        appId: "1:809638401187:web:9608adf73f25ced6d45b16",
-        measurementId: "G-2QEQZPCEZR"
-
+        apiKey: "AIzaSyBIo2sk5KS9CId37JmgIdsLtAQ1bsbwB_E",
+        authDomain: "socrathematics-cms.firebaseapp.com",
+        databaseURL: "https://socrathematics-cms.firebaseio.com",
+        projectId: "socrathematics-cms",
+        storageBucket: "socrathematics-cms.appspot.com",
+        messagingSenderId: "519917689116",
+        appId: "1:519917689116:web:d554fe30bf72534c1402d9",
+        measurementId: "G-45XWG0GJN0"
     };
+
     // Initialize Firebase
     firebase.initializeApp(firebaseConfig);
     firebase.analytics();
-
     const auth=firebase.auth();
     const db = firebase.firestore();
 </script>
-<script src="/auth/auth.js"></script>
+<script src="/wysiwyg-editor/auth/auth.js"></script>
 <script>
 
     const cmConfig = {
