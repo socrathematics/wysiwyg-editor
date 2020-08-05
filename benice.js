@@ -1,3 +1,58 @@
+var initialName = null;
+firebase.auth().onAuthStateChanged(function(user) {
+    if (user) {
+        // User is signed in.
+        // get the query parameters if any, and display an error for invalid param value. If no param, then display an empty document with no name.
+        // if doc exists, then import data from it! Also, update initialName to doc name. When user saves document and document exists but is not the same as
+        // initialName, display a warning saying they are going to overwrite the doc.
+        const urlParams = new URLSearchParams(window.location.search);
+        const myParam = urlParams.get('import');
+        if (myParam==null){
+            //make a new document
+            //document.querySelector('#docnameflat').value = ""
+            db.collection(`users/${user.uid}/courses`).add(getComp())
+                .then(function(docRef) {
+                    //redirect user to ?q=docref.id
+                    const params = new URLSearchParams(location.search);
+                    params.set("import",docRef.id);
+                    document.location  =  "?" + params.toString();
+
+                })
+                .catch(function(error) {
+                    console.error("Error adding document: ", error);
+                });
+
+        }
+        else {
+            //try to access the document
+            var docRef = db.collection(`users/${user.uid}/courses`).doc(myParam);
+
+            docRef.get().then(function(doc) {
+                if (doc.exists) {
+                    //import the data!
+                    initialName = myParam;
+                    //update the field as well - user should see doc name
+                    document.querySelector('#docnameflat').value = (doc.data().name=="" ? "Untitled Document": doc.data().name);
+                    document.title = doc.data().name;
+                    importData(doc.data());
+                    //console.log("Document data:", doc.data());
+                } else {
+                    // doc.data() will be undefined in this case
+                    // display an error message, because user entered invalid param. Erase entire page.
+                    document.querySelector("#all").innerHTML=`<div class="text-center"><h3>Invalid Document.</h3> <p>Make sure you're signed in.</p></div> `;
+                    console.log("No such document!");
+                }
+            }).catch(function(error) {
+                console.log("Error getting document:", error);
+            });
+        }
+    } else {
+        // No user is signed in.
+        // do nothing.
+    }
+});
+
+
 $('body').on('focus', '[contenteditable]', function() {
     const $this = $(this);
     $this.data('before', $this.html());
@@ -11,7 +66,7 @@ $('body').on('focus', '[contenteditable]', function() {
 var n;
 function showTag(){
     const loc = window.getSelection().focusNode.parentNode;
-    const tag = loc.tagName;
+    //const tag = loc.tagName;
     const ls = window.getComputedStyle(loc);
     var tcol = ls["color"];
     if (tcol==""){tcol=loc.color};
@@ -33,9 +88,24 @@ function showTag(){
         .getPropertyValue('--text');}else{
     hcolorWheel.color.rgbaString = hcol;};
 
-    if (tag[0]=="H"){
-        document.querySelector("#headingInd").innerText="Heading "+tag[1];
-    } else {
+    if (loc.matches("h1 ,h1")){
+        document.querySelector("#headingInd").innerText="Heading 1";
+    }
+    else if (loc.matches("h2 *,h2")){
+        document.querySelector("#headingInd").innerText="Heading 2";
+    }
+    else if (loc.matches("h3 *,h3")){
+        document.querySelector("#headingInd").innerText="Heading 3";
+    }
+    else if (loc.matches("h4 *,h3")){
+        document.querySelector("#headingInd").innerText="Heading 4";
+    }
+    else if (loc.matches("h5 *,h5")){
+        document.querySelector("#headingInd").innerText="Heading 5";
+    }
+    else if (loc.matches("h6 *,h6")){
+        document.querySelector("#headingInd").innerText="Heading 6";
+    }else {
         document.querySelector("#headingInd").innerText="Normal Text"
     }
 
@@ -45,6 +115,33 @@ function showTag(){
     cont = cont.replace(/\s+/g, ' ');
     cont = cont.trim();
     n = cont.split(" ").length;
+
+    var al = ls["text-align"];
+    if (al=="-moz-right"||al=="right"){
+        $("[data-original-title='Right align']").removeClass("btn-light");$("[data-original-title='Right align']").addClass("btn-success");
+        $("[data-original-title='Center align']").removeClass("btn-success");$("[data-original-title='Center align']").addClass("btn-light");
+        $("[data-original-title='Left align']").removeClass("btn-success");$("[data-original-title='Left align']").addClass("btn-light");
+        $("[data-original-title='Justify']").removeClass("btn-success");$("[data-original-title='Justify']").addClass("btn-light");
+    }
+    else if (al=="-moz-center"||al=="center"){
+        $("[data-original-title='Center align']").removeClass("btn-light");$("[data-original-title='Center align']").addClass("btn-success");
+        $("[data-original-title='Right align']").removeClass("btn-success");$("[data-original-title='Right align']").addClass("btn-light");
+        $("[data-original-title='Left align']").removeClass("btn-success");$("[data-original-title='Left align']").addClass("btn-light");
+        $("[data-original-title='Right align']").removeClass("btn-success");$("[data-original-title='Right align']").addClass("btn-light");
+        $("[data-original-title='Justify']").removeClass("btn-success");$("[data-original-title='Justify']").addClass("btn-light");
+    }
+    else if (al=="justify"){
+        $("[data-original-title='Justify']").removeClass("btn-light");$("[data-original-title='Justify']").addClass("btn-success");
+        $("[data-original-title='Center align']").removeClass("btn-success");$("[data-original-title='Center align']").addClass("btn-light");
+        $("[data-original-title='Right align']").removeClass("btn-success");$("[data-original-title='Right align']").addClass("btn-light");
+        $("[data-original-title='Left align']").removeClass("btn-success");$("[data-original-title='Left align']").addClass("btn-light");
+    }
+    else {
+        $("[data-original-title='Left align']").removeClass("btn-light");$("[data-original-title='Left align']").addClass("btn-success");
+        $("[data-original-title='Center align']").removeClass("btn-success");$("[data-original-title='Center align']").addClass("btn-light");
+        $("[data-original-title='Right align']").removeClass("btn-success");$("[data-original-title='Right align']").addClass("btn-light");
+        $("[data-original-title='Justify']").removeClass("btn-success");$("[data-original-title='Justify']").addClass("btn-light");
+    }
 
 
 }
@@ -197,4 +294,4 @@ const protips = ["Copy and paste content directly from another course or website
     "Hit the <i class='fas fa-eye'></i> button for a live preview of your course!"
 ];
 
-document.querySelector(".toast-body").innerHTML = protips[getRndInteger(0,protips.length)]
+//document.querySelector(".toast-body").innerHTML = protips[getRndInteger(0,protips.length)]
