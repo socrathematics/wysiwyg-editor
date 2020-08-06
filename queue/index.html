@@ -17,7 +17,7 @@
         'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
     })(window,document,'script','dataLayer','GTM-PF58PDC');</script>
     <!-- End Google Tag Manager -->
-
+    <title>Queue</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="apple-mobile-web-app-title" content="SOCRATHEMATICS">
@@ -33,11 +33,24 @@
     <link rel="stylesheet" href="/fonts.css">
     <link rel="stylesheet" href="/header.css">
     <link rel="stylesheet" href="/style.css">
-    <title>Github</title>
-
 </head>
 <body>
-<script src="../menu.js"></script>
+<script src="/wysiwyg-editor/menu.js"></script>
+<script>activate("q")</script>
+<div class="container">
+    <h2 class="display-4">Queued Courses</h2>
+    <div class="container" style="margin-top:30px">
+        <div class="card-columns">
+
+            <div  id="cardHolder">
+
+            </div>
+
+        </div>
+
+    </div>
+</div>
+
 <!-- The core Firebase JS SDK is always required and must be listed first -->
 <script src="https://www.gstatic.com/firebasejs/7.17.1/firebase-app.js"></script>
 
@@ -69,6 +82,7 @@
     const db = firebase.firestore();
 </script>
 <script src="/wysiwyg-editor/auth/auth.js"></script>
-<script src="auth.js"></script>
+<script src="list.js"></script>
+
 </body>
 </html>

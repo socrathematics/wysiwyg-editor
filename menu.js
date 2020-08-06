@@ -15,8 +15,9 @@ if (!document.getElementById("navigation")){document.write(`<div class="containe
                   
                     <li><a class="nav-item nav-link text-dark pop" href="https://socrathematics.github.io/course-maker" >Block Editor</a>
                       </li>
-                      <li><a class="nav-item nav-link text-dark pop no-auth" href="/wysiwyg-editor" >WYSIWYG Editor</a></li>
-                      <li><a class="nav-item nav-link text-dark pop auth" href="/wysiwyg-editor/choose" >My Files</a></li>
+                      <li><a class="nav-item nav-link text-dark pop no-auth" id="we" href="/wysiwyg-editor" >WYSIWYG Editor</a></li>
+                      <li><a class="nav-item nav-link text-dark pop auth" id="mf" href="/wysiwyg-editor/choose" >My Files</a></li>
+                      
                 </ul>
                 
                 <ul class="navbar-nav ml-md-auto text-center">
@@ -30,8 +31,8 @@ if (!document.getElementById("navigation")){document.write(`<div class="containe
                     <li class="nav-item dropdown" id="ma"  style="display:none">
                         <a class="nav-link pop dropdown-toggle text-dark"  id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><img src="http://placehold.it/40x40" id="top-photo" height="40px" width="40px" class="rounded-circle"> <span id="top-name">My Account</span></a>
                         <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
-                            <a class="dropdown-item cursor-pointer"   href="/course-maker/v3/u/my-account" >Account Info</a>
-                            <a class="dropdown-item cursor-pointer" href="/course-maker/v3//u/dashboard">Dashboard</a>
+                            <a class="dropdown-item cursor-pointer"   href="/wysiwyg-editor/u/my-account" >Account Info</a>
+                            <a class="dropdown-item cursor-pointer" href="/wysiwyg-editor//u/dashboard">Dashboard</a>
                             <div class="dropdown-divider"></div>
                             <a class="dropdown-item cursor-pointer"  data-toggle="modal" data-target="#som">Sign out</a>
 
@@ -216,7 +217,7 @@ if (!document.getElementById("navigation")){document.write(`<div class="containe
     console.log("Menu and header successfully written to DOM.")}
 
 function activate(id){
-//document.getElementById(id).className += " top active ";
+document.getElementById(id).className += " top active ";
 }
 
 document.querySelector("#sbut").addEventListener("click", (e) => {

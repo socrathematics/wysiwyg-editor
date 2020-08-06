@@ -113,32 +113,7 @@
 
 
 
-<!-- Modal -->
-<div class="modal fade" id="dnameModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Name your Document</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                <form id="signin-form">
-                    <div class="form-group">
-                        <label class="" for="docname">How should we save your document?</label>
-                        <input class="form-control" type="text" id="docname" required />
 
-                    </div>
-                </form>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-                <button type="submit" id="dnamesub" class="btn btn-success">Save</button>
-            </div>
-        </div>
-    </div>
-</div>
 
 <div class="container" id="all" style="margin-top:30px">
     <div class="row d-flex justify-content-center align-items-center">
@@ -159,7 +134,7 @@
         <div class="btn-toolbar  " role="toolbar" aria-label="Toolbar with button groups">
             <div class="input-group mr-3">
 
-                <input class="form-control form-control-lg no-hl" type="text" id="docnameflat"  />
+                <input class="form-control form-control-lg no-hl" type="text" value="Untitled Document" id="docnameflat"  />
 
             </div>
             <div class="btn-group float-right " role="group" aria-label="First group">
@@ -192,8 +167,8 @@ let sideeditor=document.getElementById('side');sideeditor.classList.toggle('show
                 <button class="btn btn-light" data-toggle="tooltip" data-placement="top" title="Save .html" onclick="save()">
                     <i class="fas fa-file-download"></i>
                 </button>
-                <button class="btn auth btn-light" data-toggle-second="tooltip" data-placement="top" title="Save to my files" onclick="
-upload(initialName)">
+                <button class="btn auth btn-light" id="uploadButton" data-toggle-second="tooltip" data-placement="top" title="Save to my files" onclick="
+upload()">
                     <i class="fas fa-cloud-upload-alt"></i>
                 </button>
             </div>

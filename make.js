@@ -86,13 +86,20 @@ function importData(c) {
     document.getElementById("ctitle").innerHTML = c.titleHTML;
     document.getElementById("bottomNav").innerHTML = c.bnavHTML;
     document.getElementById("mainContent").innerHTML = c.mainHTML;
-
+    isTypeset=false;
+    ToggleMJ();
 }
 //get document id from user. do this while modal is still open to give errors. show document id above toolbar.
-function upload(docu){
+function upload(){
     const user = auth.currentUser;
     const c = getComp();
-    db.collection("users").doc(user.uid).collection("courses").doc(docu).set(c).then((e)=>{console.log("uploaded!")})
+    docRef.update(c).then(function() {
+        console.log("Document successfully written!");
+        document.getElementById("uploadButton").innerHTML = "<i class=\"fas text-success fa-check-circle\"></i>";
+    })
+        .catch(function(error) {
+            console.error("Error writing document: ", error);
+        });
 
 }
 

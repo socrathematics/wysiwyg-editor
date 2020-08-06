@@ -36,21 +36,109 @@
 </head>
 <body>
 <script src="../menu.js"></script>
-<div class="container" style="margin-top:30px">
+<script>activate("mf")</script>
+<div class="container justify-content-center" style="margin-top:30px">
+    <h2 class="display-4 my-3">Your Courses</h2>
     <div class="card-columns">
-        <div class="card no-def" style="width:18rem;height:14rem;padding-top:4rem">
+        <div class="card no-def" style="min-width:18rem;height:14rem;padding-top:4rem">
             <div class="card-body text-center h1 text-success">
                 <a class="stretched-link link" href="../"><i class="fas fa-plus"></i></a>
             </div>
         </div>
+
     <div  id="cardHolder">
 
     </div>
 
     </div>
+    <hr/>
+    <h2 class="my-3 display-4">Sent</h2>
+    <div class="card-columns">
+        <div  id="sCardHolder">
+            <div class="text-center">
+                <p class="h5 text-main">Nothing yet!</p></div>
+        </div>
+
+    </div>
+<hr/>
+    <h2 class="my-3 display-4">Returned</h2>
+    <div class="card-columns">
+        <div  id="rCardHolder">
+            <div class="text-center">
+                <p class="h5 text-main">Nothing yet!</p></div>
+        </div>
+
+    </div>
+
+
+    <hr/>
+    <h2 class="my-3 display-4">Accepted</h2>
+    <div class="card-columns mb-5 pb-5">
+        <div  id="aCardHolder">
+            <div class="text-center">
+                <p class="h5 text-main">Nothing yet!</p></div>
+        </div>
+
+    </div>
+    <div class="modal fade" id="cstatModal" data-backdrop="static" tabindex="-1" aria-labelledby="cstatModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="cstatModalLabel">Publishing your course</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="progress" style="background-color: var(--grey4)">
+                        <div id="commitProgress" class="progress-bar-animated progress-bar progress-bar-striped bg-success" role="progressbar" style="width: 0%" aria-valuenow="0" aria-valuemin="0" aria-valuemax="8"></div>
+                    </div>
+                    <div class="text-center">
+                        <h4 class="text-success" id="commitStatus"><br></h4>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="commitModal" data-backdrop="static" tabindex="-1" aria-labelledby="commitModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="commitModalLabel">Where should this go?</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label class="" for="commit-path">Location</label>
+                        <input class="form-control" type="text" id="commit-path" required placeholder="calculus/index.html"/>
+
+                    </div>
+                    <div class="form-group">
+                        <label class="" for="commit-ms">Note</label>
+                        <input class="form-control" type="text" required placeholder="Adding course via uploader" id="commit-ms" />
+                        <p class="text-muted form-text" id="cm-e"></p>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="button" id="commit-button" class="btn btn-success" onclick="" >Publish</button>
+                </div>
+            </div>
+        </div>
+    </div>
 
 </div>
 
+<style>
+    hr{
+        border-top: 1px solid var(--grey3)
+    }
+    .progress{
+        background-color: var(--grey5);
+    }
+</style>
 </body>
 <!-- The core Firebase JS SDK is always required and must be listed first -->
 <script src="https://www.gstatic.com/firebasejs/7.17.1/firebase-app.js"></script>
@@ -85,4 +173,5 @@
 <script src="../auth/auth.js"></script>
 <script src="list.js"></script>
 <script src="manage.js"></script>
+<script src="../github/commit.js"></script>
 </html>

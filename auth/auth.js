@@ -101,7 +101,7 @@ signinButton.addEventListener("click",(e)=>{
             document.getElementById("sim-e").innerHTML = "We didn't find an account with that email. Sign up instead?";}
         else if (error.code == "auth/too-many-requests"){
             console.log("too many tries");
-            document.getElementById("sim-e").innerHTML = "It looks like you've tried to log in too many times  in the past minute. We've locked your account for the next two minutes.";}
+            document.getElementById("sim-e").innerHTML = "It looks like you've tried to log in too many times in the past minute. We've locked your account for the next two minutes.";}
         else{console.log(error.code)}
     });
 

@@ -1,4 +1,7 @@
+
+
 var initialName = null;
+var docRef;
 firebase.auth().onAuthStateChanged(function(user) {
     if (user) {
         // User is signed in.
@@ -7,6 +10,7 @@ firebase.auth().onAuthStateChanged(function(user) {
         // initialName, display a warning saying they are going to overwrite the doc.
         const urlParams = new URLSearchParams(window.location.search);
         const myParam = urlParams.get('import');
+        const isReview = urlParams.get('review');
         if (myParam==null){
             //make a new document
             //document.querySelector('#docnameflat').value = ""
@@ -24,8 +28,14 @@ firebase.auth().onAuthStateChanged(function(user) {
 
         }
         else {
-            //try to access the document
-            var docRef = db.collection(`users/${user.uid}/courses`).doc(myParam);
+            //try to access the document, depending on whether we are reviewing
+
+            if (isReview==null || isReview != 0) {
+                docRef = db.collection(`users/${user.uid}/courses`).doc(myParam);
+            }
+            else{
+                docRef = db.collection(`queue/courses/review`).doc(myParam);
+            }
 
             docRef.get().then(function(doc) {
                 if (doc.exists) {
@@ -65,7 +75,9 @@ $('body').on('focus', '[contenteditable]', function() {
 });
 var n;
 function showTag(){
+    document.getElementById("uploadButton").innerHTML = "<i class=\"fas fa-cloud-upload-alt\"></i>";
     const loc = window.getSelection().focusNode.parentNode;
+
     //const tag = loc.tagName;
     const ls = window.getComputedStyle(loc);
     var tcol = ls["color"];
