@@ -36,6 +36,7 @@ firebase.auth().onAuthStateChanged(function(user) {
                 cardHolder.innerHTML ="";
                 rCardHolder.innerHTML="";
                 aCardHolder.innerHTML ="";
+                sCardHolder.innerHTML = "";
                 col.docs.forEach(function(doc) {
                     // doc.data() is never undefined for query doc snapshots
                     if (doc.data().purpose==="review") {
