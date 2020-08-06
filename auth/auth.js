@@ -91,7 +91,8 @@ signinButton.addEventListener("click",(e)=>{
     auth.signInWithEmailAndPassword(email,password).then(cred => {
         $("#sim").modal('hide');
         signinForm.reset();
-
+        document.location ="/wysiwyg-editor/choose/";
+        
     }).catch(function(error) {
         if(error.code=="auth/wrong-password"){
             console.log("wrong password");
