@@ -1,5 +1,5 @@
 // this is FTP - pure gold
-function commitFile(path,content,message="Adding course via uploader",callback =function(step,message){console.log(step+" : "+message)}){ // aaah this was SUCH a pain to code...
+function commitFile(path,content,message="Adding course via uploader",branch="master",callback =function(step,message){console.log(step+" : "+message)}){ // aaah this was SUCH a pain to code...
     const user = auth.currentUser;
     var docRef = db.collection(`users`).doc(user.uid);
     callback(0, "Grabbing your credentials");
@@ -13,8 +13,8 @@ function commitFile(path,content,message="Adding course via uploader",callback =
             }
 
             var step1 = new XMLHttpRequest();
-            step1.open("GET","https://api.github.com/repos/socrathematics/socrathematics.github.io/git/refs/heads/master");
-            callback(1, "Reading branch 'master'");
+            step1.open("GET",`https://api.github.com/repos/socrathematics/socrathematics.github.io/git/refs/heads/${branch}`);
+            callback(1, `Reading branch '${branch}'`);
             step1.setRequestHeader("Authorization", `token ${d}`);
             step1.onload = function () {
                 console.log("===== STEP 1 =====")
@@ -76,7 +76,7 @@ function commitFile(path,content,message="Adding course via uploader",callback =
                                     const step7treesha = data.sha;
                                     var step7 = new XMLHttpRequest();
                                     callback(7, `Merging your changes`);
-                                    step7.open("PATCH","https://api.github.com/repos/socrathematics/socrathematics.github.io/git/refs/heads/master");
+                                    step7.open("PATCH","https://api.github.com/repos/socrathematics/socrathematics.github.io/git/refs/heads/"+branch);
                                     step7.setRequestHeader("Authorization", `token ${d}`);
                                     step7.onload = function(){
                                         console.log("===== STEP 7 =====")

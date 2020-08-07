@@ -36,7 +36,6 @@ firebase.auth().onAuthStateChanged(function(user) {
                 cardHolder.innerHTML ="";
                 rCardHolder.innerHTML="";
                 aCardHolder.innerHTML ="";
-                sCardHolder.innerHTML = "";
                 col.docs.forEach(function(doc) {
                     // doc.data() is never undefined for query doc snapshots
                     if (doc.data().purpose==="review") {
@@ -53,13 +52,13 @@ firebase.auth().onAuthStateChanged(function(user) {
                     }
                     //console.log(doc);
                 });
-                if(rCardHolder.innerHTML==""){rCardHolder.innerHTML=`<div class="text-center">
+                if(rCardHolder.innerHTML===""){rCardHolder.innerHTML=`<div class="text-center">
                 <p class="h5 text-main">Nothing yet!</p></div>
         </div>`}
-                if(aCardHolder.innerHTML==""){aCardHolder.innerHTML=`<div class="text-center">
+                if(aCardHolder.innerHTML===""){aCardHolder.innerHTML=`<div class="text-center">
                 <p class="h5 text-main">Nothing yet!</p></div>
         </div>`}
-                if(sCardHolder.innerHTML==""){sCardHolder.innerHTML=`<div class="text-center">
+                if(sCardHolder.innerHTML===""){sCardHolder.innerHTML=`<div class="text-center">
                 <p class="h5 text-main">Nothing yet!</p></div>
         </div>`}
             });
@@ -102,6 +101,18 @@ function sendForReview(dn){
 
 function startCommit(dn){
     document.getElementById("commit-button").onclick= function(){commitCourse(dn)};
+    getBranches(function(data){
+        const cont = document.querySelector("#blist");
+        cont.innerHTML = "";
+        for (var k in Object.keys(data)){
+            let n =document.createElement("OPTION");
+            cont.appendChild(n);
+            n.innerText  = data[k].name;
+            n.value = data[k].name;
+
+        }
+        cont.value="master"
+    })
     $("#commitModal").modal("show");
 
 
@@ -111,6 +122,7 @@ function commitCourse(dn){
     // verify that the path is given
     const path = document.getElementById("commit-path").value.trim().replaceAll(" ","-");
     const message = document.getElementById("commit-ms").value.trim();
+    const branch = document.getElementById("commit-branch").value;
     if (message===""){
         document.getElementById("cm-e").innerText = "You must provide a commit message."
         return;
@@ -131,7 +143,11 @@ function commitCourse(dn){
         return;
     } else {
         // if it is, close the modal.
-
+        document.getElementById("commitProgress").style.width = "0%";
+        document.getElementById("commitStatus").innerHTML = "";
+        const pbar = $("#commitProgress");
+        pbar.removeClass("bg-danger");
+        pbar.addClass("bg-success");
         $("#cstatModal").modal("show");
         $("#commitModal").modal("hide");
         console.log(dn);
@@ -146,20 +162,61 @@ function commitCourse(dn){
             // compile it
             //console.log(d);
             const ht = compileHTML(d, true); //make sure to use firebase
-            // commit it.
-            commitFile(path, ht, message, function(step, message){
 
-                document.getElementById("commitProgress").style.width = step/7 * 100 + "%";
-                document.getElementById("commitStatus").innerHTML = message + "...";
-                if (step === 8){
-                    $("#cstatModal").modal("hide");
-                }
-                if (step === -1){
-                    const pbar = $("#commitProgress");
-                    pbar.removeClass("bg-success");
-                    pbar.addClass("bg-danger");
+            var branchExists=false;
+            getBranches(function (data) {
+                for (k in Object.keys(data)){
+                    if (k.name===branch){
+                        branchExists=true;
+                    }
                 }
             })
+            if (!branchExists){
+                createBranch(branch, undefined,function () {
+                    commitFile(path, ht, message, branch, function(step, message){
+
+                        document.getElementById("commitProgress").style.width = step/7 * 100 + "%";
+                        document.getElementById("commitStatus").innerHTML = message + "...";
+                        if (step === 8){
+                            $("#cstatModal").modal("hide");
+                            if (branch !== "master"){
+                                //ask user if they want a pull request by bringing up the modal for it, and adding the onclick.
+                                // define the onclick elsewhere.
+                                document.querySelector("#pullModal .btn-success").onclick = function(){startPull(branch)} //if they say yes, then you open the optioons
+                                $("#pullModal").modal("show");
+                            }
+                        }
+                        if (step === -1){
+                            const pbar = $("#commitProgress");
+                            pbar.removeClass("bg-success");
+                            pbar.addClass("bg-danger");
+                        }
+                    });
+                })
+            }
+        else{
+                commitFile(path, ht, message, branch, function(step, message){
+
+                    document.getElementById("commitProgress").style.width = step/7 * 100 + "%";
+                    document.getElementById("commitStatus").innerHTML = message + "...";
+                    if (step === 8){
+                        $("#cstatModal").modal("hide");
+                        if (branch !== "master"){
+                            //ask user if they want a pull request by bringing up the modal for it, and adding the onclick.
+                            // define the onclick elsewhere.
+                            document.querySelector("#pullModal .btn-success").onclick = function(){startPull(branch)} //if they say yes, then you open the optioons
+                            $("#pullModal").modal("show");
+                        }
+                    }
+                    if (step === -1){
+                        const pbar = $("#commitProgress");
+                        pbar.removeClass("bg-success");
+                        pbar.addClass("bg-danger");
+                    }
+                });
+            }
+            // commit it.
+
             /*
             * */
         } else {
@@ -172,6 +229,45 @@ function commitCourse(dn){
 
 }
 
+function startPull(br){
+    //if the user says yes, (they did)
+//add the onclick to the publish button, and show the modal with the form.
+    document.querySelector("#cPullModal .btn-success").onclick = function(){pullCourse(br)};
+    $("#pullModal").modal("hide");
+    $("#cPullModal").modal("show");
+}
+
+function pullCourse(br){
+//get all the info, if anything is wrong display a message and return. else, close modal, open new, and open the pull request.
+    document.getElementById("cpull-e").innerHTML = "";
+    const t = document.getElementById("c-pull-title").value.trim();
+    const b = document.getElementById("c-pull-body").value.trim();
+    const d = document.getElementById("cpull-draft").checked;
+    if (t===""){
+        document.getElementById("cpull-e").innerHTML = "You must specify a title."
+    }
+
+
+    document.getElementById("commitProgress").style.width = "0%";
+    document.getElementById("commitStatus").innerHTML = "";
+    const pbar = $("#commitProgress");
+    pbar.removeClass("bg-danger");
+    pbar.addClass("bg-success");
+    $("#cPullModal").modal("hide");
+    $("#cstatModal").modal("show");
+    createPull(t,br,"master",b,d,function (step,message) {
+        document.getElementById("commitProgress").style.width = step/7 * 100 + "%";
+        document.getElementById("commitStatus").innerHTML = message + "...";
+        if (step === -1){
+            const pbar = $("#commitProgress");
+            pbar.removeClass("bg-success");
+            pbar.addClass("bg-danger");
+        }
+        if (step===2){
+            $("#cstatModal").modal("hide");
+        }
+    })
+}
 
 function compileHTML(comp,fire=true){
     const titleText = comp.titleText;
@@ -204,11 +300,11 @@ function compileHTML(comp,fire=true){
     <meta name="apple-mobile-web-app-title" content="SOCRATHEMATICS">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="#28a745">
-      <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous"/>
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
-   <link rel="icon" href="/favicon.png"/>
+<script src="https://kit.fontawesome.com/30a0cbcf71.js" crossorigin="anonymous"></script> <link rel="icon" href="/favicon.png"/>
     <link rel="stylesheet" href="/fonts.css"/>
     <link rel="stylesheet" href="/header.css"/>
     <link rel="stylesheet" href="/style.css"/>

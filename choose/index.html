@@ -100,6 +100,65 @@
             </div>
         </div>
     </div>
+
+    <div class="modal fade" id="cPullModal" tabindex="-1" role="dialog" aria-labelledby="cPullModalTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="cPullModalTitle">Compose your pull request</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+
+                        <input class="form-control no-hl" type="text" id="c-pull-title" placeholder="Title"/>
+
+                    </div>
+                    <div class="form-group">
+
+                        <textarea class="form-control no-hl" id="c-pull-body" rows="4" placeholder="Explain your changes..."></textarea>
+
+                    </div>
+                    <div class="form-group">
+                        <div class="custom-control custom-checkbox">
+                            <input class="custom-control-input " type="checkbox"  id="cpull-draft">
+                            <label class="custom-control-label" for=cpull-draft>
+                                Make this a draft
+                            </label>
+                        </div>
+                        <p class="text-muted form-text" id="cpull-e"><br></p>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-success">Submit</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="pullModal" tabindex="-1" role="dialog" aria-labelledby="pullModalTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="pullModalTitle">Would you like to open a pull request?</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <p>Since you committed to a branch other than master, would you like to open a pull request to master?</p>
+                    <p>You can do this later by committing something else to the same branch.</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">No</button>
+                    <button type="button" class="btn btn-success">Yes</button>
+                </div>
+            </div>
+        </div>
+    </div>
     <div class="modal fade" id="commitModal" data-backdrop="static" tabindex="-1" aria-labelledby="commitModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
@@ -114,6 +173,17 @@
                         <label class="" for="commit-path">Location</label>
                         <input class="form-control" type="text" id="commit-path" required placeholder="calculus/index.html"/>
 
+                    </div>
+                    <div class="form-group">
+                        <label for="commit-branch">Branch</label>
+                        <input type="text" class="form-control" list="blist" id="commit-branch">
+                        <datalist  id="blist">
+                            <option>Master</option>
+                            <option>2</option>
+                            <option>3</option>
+                            <option>4</option>
+                            <option>5</option>
+                        </datalist>
                     </div>
                     <div class="form-group">
                         <label class="" for="commit-ms">Note</label>
@@ -137,6 +207,9 @@
     }
     .progress{
         background-color: var(--grey5);
+    }
+    .custom-select{
+        background-color: var(--grey4);
     }
 </style>
 </body>
@@ -172,6 +245,6 @@
 </script>
 <script src="../auth/auth.js"></script>
 <script src="list.js"></script>
-<script src="manage.js"></script>
+<script src="../github/branches.js"></script>
 <script src="../github/commit.js"></script>
 </html>
