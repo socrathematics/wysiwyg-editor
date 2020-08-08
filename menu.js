@@ -13,10 +13,10 @@ if (!document.getElementById("navigation")){document.write(`<div class="containe
                 <ul class="navbar-nav nav nav-fill">
                     
                   
-                    <li><a class="nav-item nav-link text-dark pop" href="https://socrathematics.github.io/course-maker" >Block Editor</a>
+                    <li><a class="nav-item nav-link text-dark pop" href="https://ymath.io/course-maker" >Block Editor</a>
                       </li>
-                      <li><a class="nav-item nav-link text-dark pop no-auth" id="we" href="/wysiwyg-editor" >WYSIWYG Editor</a></li>
-                      <li><a class="nav-item nav-link text-dark pop auth" id="mf" href="/wysiwyg-editor/choose" >My Files</a></li>
+                      <li><a class="nav-item nav-link text-dark pop no-auth" id="we" href="/" >WYSIWYG Editor</a></li>
+                      <li><a class="nav-item nav-link text-dark pop auth" id="mf" href="/choose" >My Files</a></li>
                       
                 </ul>
                 
@@ -25,14 +25,14 @@ if (!document.getElementById("navigation")){document.write(`<div class="containe
                         <input class="form-control no-hl mr-sm-2 mx-1" type="search"  placeholder="Search"  id="sque" aria-label="Search" >
                         <button class="btn btn-outline-main my-2 mx-1 my-sm-0" id="sbut" type="button">Search</button>
                     </form>
-                    <li class="nav-item nav-link text-dark poop cursor-pointer" id="su" data-toggle="modal" data-target="#sum" style="display:none">Sign Up</li>
+                    <li class="nav-item nav-link text-dark pop cursor-pointer" id="su" data-toggle="modal" data-target="#sum" style="display:none">Sign Up</li>
                     <li class="nav-item nav-link text-dark pop cursor-pointer" id="si" data-toggle="modal" data-target="#sim" style="display:none">Sign In</li>
 
                     <li class="nav-item dropdown" id="ma"  style="display:none">
                         <a class="nav-link pop dropdown-toggle text-dark"  id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><img src="http://placehold.it/40x40" id="top-photo" height="40px" width="40px" class="rounded-circle"> <span id="top-name">My Account</span></a>
                         <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
-                            <a class="dropdown-item cursor-pointer"   href="/wysiwyg-editor/u/my-account" >Account Info</a>
-                            <a class="dropdown-item cursor-pointer" href="/wysiwyg-editor//u/dashboard">Dashboard</a>
+                            <a class="dropdown-item cursor-pointer"   href="/u/my-account" >Account Info</a>
+                            <a class="dropdown-item cursor-pointer" href="/u/dashboard">Dashboard</a>
                             <div class="dropdown-divider"></div>
                             <a class="dropdown-item cursor-pointer"  data-toggle="modal" data-target="#som">Sign out</a>
 
@@ -94,7 +94,7 @@ if (!document.getElementById("navigation")){document.write(`<div class="containe
           <div class="custom-control custom-checkbox">
             <input class="custom-control-input " type="checkbox"  id="ppagree" required>
             <label class="custom-control-label" for="ppagree">
-              By signing up, you agree that you know what you're getting into, because you read the <a href="/faq" class="link"><u>FAQ</u></a> and you don't hold the owner of this website liable for anything that happens to you.
+              By signing up, you agree that you know what you're getting into, because you read the <a href="https://ymath.io/faq" class="link"><u>Privacy Policy</u></a> and you don't hold the owner of this website liable for anything that happens to you.
             </label>
           </div>
           <p class="text-muted form-text" id="sum-e"><br></p>
