@@ -1,7 +1,7 @@
 
 if (!document.getElementById("navigation")){document.write(`<div class="container-fluid text-center bg-transparent text-light masthead-sub">
-    <h1 class="mastTitle-sub " ><a href="/" style="text-decoration:none;color:white;"><b>SOCRATHEMATICS</b></a></h1>
-  <p class="mastTitle-sub-2" ><b>Math, right at your fingertips</b></p>
+    <h1 class="mastTitle-sub " ><a href="/" style="text-decoration:none;color:white;"><b>YMath</b></a></h1>
+  <p class="mastTitle-sub-2" ><b>Math - explained to be understood</b></p>
 
 </div>
 <nav class="navbar navbar-expand-lg navbar-light bg-light sticky-top " style="opacity:1;">
