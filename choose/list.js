@@ -1,7 +1,7 @@
 
 
 function createPreview(c,k,norev=true,acc=false,dis=false){
-    return `<div class="card no-def" style="min-width:18rem;min-height:14rem">
+    return `<div class="card no-def" style="max-width:20rem;min-height:14rem">
 
             <div class="card-body" id="${k}-card" >
             ${!dis? `
@@ -11,7 +11,7 @@ function createPreview(c,k,norev=true,acc=false,dis=false){
                     </a>
                     <div class="dropdown-menu cursor-pointer" style="min-width: 0px">
                         ${dis? ``:`<a class="dropdown-item" onclick="window.open('../?import=${k}','_blank')" ><i class="fas fa-external-link-alt mr-2"></i> Open</a>`}
-                        ${norev? `<a class="dropdown-item" onclick="removeDoc('${k}')" ><i class="fas fa-trash-alt mr-2"></i> Delete</a>` : ``}
+                        ${norev||acc? `<a class="dropdown-item" onclick="removeDoc('${k}')" ><i class="fas fa-trash-alt mr-2"></i> Delete</a>` : ``}
                         ${!acc? `<a class="dropdown-item" onclick="sendForReview('${k}')"><i class="fas fa-paper-plane mr-2"></i> ${norev? `Submit`: `Resubmit`}</a>`: ``}
                     ${acc? `<a class="dropdown-item" onclick="startCommit('${k}')"><i class="fas fa-check mr-2"></i> Publish</a>` : ``}
                     </div>
