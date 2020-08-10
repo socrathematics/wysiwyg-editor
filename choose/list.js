@@ -312,9 +312,15 @@ function compileHTML(comp,fire=true){
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
 <script src="https://kit.fontawesome.com/30a0cbcf71.js" crossorigin="anonymous"></script> <link rel="icon" href="/favicon.png"/>
+<link rel="stylesheet" href="/mathquill-0.10.1/mathquill.css"/>
+    <script src="/mathquill-0.10.1/mathquill.js"></script>
     <link rel="stylesheet" href="/fonts.css"/>
     <link rel="stylesheet" href="/header.css"/>
     <link rel="stylesheet" href="/style.css"/>
+    <script>
+        var MQ = MathQuill.getInterface(2);
+
+    </script>
               <!--mathjax-->
   <script>
 MathJax = {
