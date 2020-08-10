@@ -349,7 +349,8 @@ MathJax = {
 
             <div>
                 <h2>${titleHTML}</h2>
-                ${mainHTML.replace( /##(((?!##).)*)##/sg, `<span id=\"answer${incPnum()}\" class=\"form-control-sm or answerb\"></span><svg id=\"tu${pnum}\" class=\"bi bi-hand-thumbs-up\" width=\"2em\" height=\"2em\" style=\"display:none\" viewBox=\"0 0 16 16\" fill=\"var(--success)\" xmlns=\"http://www.w3.org/2000/svg\"></svg><script>initfield(${pnum},"", ["$1"])</script>`)}
+                ${mainHTML.replace( /##(((?!##).)*)##/sg, `<span id=\"answer${incPnum()}\" class=\"form-control-sm or answerb\"></span><svg id=\"tu${pnum}\" class=\"bi bi-hand-thumbs-up\" width=\"2em\" height=\"2em\" style=\"display:none\" viewBox=\"0 0 16 16\" fill=\"var(--success)\" xmlns=\"http://www.w3.org/2000/svg\"><path fill-rule="evenodd"
+        d="M13.854 3.646a.5.5 0 0 1 0 .708l-7 7a.5.5 0 0 1-.708 0l-3.5-3.5a.5.5 0 1 1 .708-.708L6.5 10.293l6.646-6.647a.5.5 0 0 1 .708 0z"/></svg><script>initfield(${pnum},"", ["$1"])</script>`)}
 
 <div style="height:7vh"></div>
 <nav>${bnavHTML.replaceAll(`contenteditable=""`,"")}</nav>
