@@ -270,6 +270,11 @@ function pullCourse(br){
         }
     })
 }
+var pnum = 0;
+function incPnum(){
+    pnum++;
+    return pnum;
+}
 
 function compileHTML(comp,fire=true){
     const titleText = comp.titleText;
@@ -321,6 +326,7 @@ MathJax = {
 
   <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"> </script>
 <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"> </script>
+<script src="/check.js"></script>
 </head><body>
 <!-- Google Tag Manager (noscript) -->
 <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-PF58PDC"
@@ -337,7 +343,7 @@ MathJax = {
 
             <div>
                 <h2>${titleHTML}</h2>
-                ${mainHTML}
+                ${mainHTML.replace( /##(((?!##).)*)##/sg, `<span id=\"answer${incPnum()}\" class=\"form-control-sm or answerb\"></span><svg id=\"tu${pnum}\" class=\"bi bi-hand-thumbs-up\" width=\"2em\" height=\"2em\" style=\"display:none\" viewBox=\"0 0 16 16\" fill=\"var(--success)\" xmlns=\"http://www.w3.org/2000/svg\"></svg><script>initfield(${pnum},"", ["$1"])</script>`)}
 
 <div style="height:7vh"></div>
 <nav>${bnavHTML.replaceAll(`contenteditable=""`,"")}</nav>
