@@ -54,16 +54,14 @@ function save(){
 function addProb() {
 document.execCommand("insertHTML",false,`<li class="card card-body no-def my-3 pop">
 
-    <p>$\\displaystyle{ x = }$ <script defer>initfield(${pnum},"",["y"]);</script><span id="answer${pnum}" class="form-control-sm or answerb"></span><svg id="tu${pnum}" class="bi bi-hand-thumbs-up" width="2em" height="2em" style="display:none" viewBox="0 0 16 16" fill="var(--success)" xmlns="http://www.w3.org/2000/svg">
-  <path fill-rule="evenodd"
-        d="M13.854 3.646a.5.5 0 0 1 0 .708l-7 7a.5.5 0 0 1-.708 0l-3.5-3.5a.5.5 0 1 1 .708-.708L6.5 10.293l6.646-6.647a.5.5 0 0 1 .708 0z"/>
-</svg></p>
+    <p>$\\displaystyle{ x = }$ ## latex of answer here ## </p>
             <!--Hints--><details><summary class="btn btn-outline-success btn-sm mt-2">Hint</summary> <p>Hint one</p></details>
             <details><summary class="btn btn-outline-success btn-sm mt-2">Hint</summary><p>Hint two</p></details>
             <!--Solution--><details><summary class="btn btn-sm btn-outline-success mt-2">Show/Hide Solution</summary>
                 <p>Solution</p>
         </details>
-        </li><p>`); pnum+=1;
+        </li>
+        <p>`); //pnum+=1;
 }
 //Download data as json
 function getComp(){
@@ -101,6 +99,11 @@ function upload(){
             console.error("Error writing document: ", error);
         });
 
+}
+
+function incPnum(){
+    pnum++;
+    return pnum;
 }
 
 
@@ -142,9 +145,16 @@ function compile(comp= {},fire=true){
 <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
 <script src="https://kit.fontawesome.com/30a0cbcf71.js" crossorigin="anonymous"></script>   
 <link rel="icon" href="/favicon.png">
+<link rel="stylesheet" href="/mathquill-0.10.1/mathquill.css"/>
+    <script src="/mathquill-0.10.1/mathquill.js"></script>
+    <script src="/check.js"></script>
     <link rel="stylesheet" href="/fonts.css">
     <link rel="stylesheet" href="/header.css">
     <link rel="stylesheet" href="/style.css">
+    <script>
+        var MQ = MathQuill.getInterface(2);
+
+    </script>
               <!--mathjax-->
   <script>
 MathJax = {
@@ -172,7 +182,7 @@ MathJax = {
 
             <div>
                 <h2>${titleHTML}</h2>
-                ${mainHTML}
+                ${mainHTML.replace( /##(((?!##).)*)##/sg, `<span id=\"answer${incPnum()}\" class=\"form-control-sm or answerb\"></span><svg id=\"tu${pnum}\" class=\"bi bi-hand-thumbs-up\" width=\"2em\" height=\"2em\" style=\"display:none\" viewBox=\"0 0 16 16\" fill=\"var(--success)\" xmlns=\"http://www.w3.org/2000/svg\"></svg><script>initfield(${pnum},"", ["$1"])</script>`)}
 
 <div style="height:7vh"></div>
 <nav>${bnavHTML.replaceAll(`contenteditable=""`,"")}</nav>
